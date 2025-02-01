@@ -16,7 +16,7 @@ type Player struct {
 
 func NewPlayer(url string) *Player {
 	player := Player{}
-	player.Dest = rl.NewRectangle(0, 0, 100, 100)
+	player.Dest = rl.NewRectangle(15*48, 15*48, 100, 100)
 	player.Src = rl.NewRectangle(0, 0, 48, 48)
 	player.Tex = rl.LoadTexture(url)
 	player.Speed = 3
