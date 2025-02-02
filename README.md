@@ -1,4 +1,4 @@
-# Game Title (WIP)
+# HeHeLand (~ Animal Crossing)
 
 A **2D game** built using **Go** and the **Raylib** library, developed without any external frameworks.
 
@@ -35,9 +35,11 @@ This project is a work-in-progress **sandbox-style 2D game**, inspired by games 
 - Install **Go**: [Download Go](https://go.dev/dl/)
 - Install **Raylib**:
   - Mac/Linux:
+
     ```sh
     brew install raylib
     ```
+
   - Windows:
     - Download from [Raylib GitHub](https://github.com/raysan5/raylib)
     - Follow installation instructions for your OS.
