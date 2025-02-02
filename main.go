@@ -32,7 +32,7 @@ func QuitGame() {
 }
 
 func Input() {
-	game.P.Move(game.GameFrame)
+	game.P.Move(game.GameFrame, game.Scenes[0])
 }
 
 func Update() {
@@ -41,7 +41,6 @@ func Update() {
 	dy := math.Max(float64(game.P.Dest.Y)-screenHeight/2, 0)
 	dx = math.Min(dx, float64(game.Scenes[0].TileSetJson.Layers[0].Width*48-screenWidth))
 	dy = math.Min(dy, float64(game.Scenes[0].TileSetJson.Layers[0].Height*48-screenHeight))
-
 	game.Camera.Target = rl.NewVector2(float32(dx), float32(dy))
 	rl.UpdateMusicStream(music)
 }
@@ -53,7 +52,6 @@ func Draw() {
 	game.Scenes[0].DrawScene()
 	game.P.Draw()
 	rl.EndMode2D()
-
 	rl.EndDrawing()
 }
 

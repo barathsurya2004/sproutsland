@@ -17,7 +17,7 @@ func NewGame() *Game {
 	game := &Game{}
 	game.P = class.NewPlayer("./assets/Characters/BasicCharSprite.png")
 	game.Camera = rl.NewCamera2D(rl.NewVector2(0, 0), rl.NewVector2(game.P.Dest.X-screenWidth/2, game.P.Dest.Y-screenHeight/2), 0, 1)
-	temp := scenes.NewScene("./assets/Tilesets/Grass.png", "./assets/TileMaps/tilees.tmj")
+	temp := scenes.NewScene("./assets/TileMaps/tilees.tmj")
 	game.Scenes = append(game.Scenes, temp)
 
 	return game
