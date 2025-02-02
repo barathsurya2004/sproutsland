@@ -7,10 +7,12 @@ import (
 )
 
 type Game struct {
-	GameFrame int
-	P         *class.Player
-	Camera    rl.Camera2D
-	Scenes    []*scenes.Scene
+	GameFrame       int
+	P               *class.Player
+	Camera          rl.Camera2D
+	Scenes          []*scenes.Scene
+	Inventory       rl.Rectangle
+	IsInventoryOpen bool
 }
 
 func NewGame() *Game {
@@ -19,6 +21,14 @@ func NewGame() *Game {
 	game.Camera = rl.NewCamera2D(rl.NewVector2(0, 0), rl.NewVector2(game.P.Dest.X-screenWidth/2, game.P.Dest.Y-screenHeight/2), 0, 1)
 	temp := scenes.NewScene("./assets/TileMaps/tilees.tmj")
 	game.Scenes = append(game.Scenes, temp)
+	game.Inventory = rl.NewRectangle(1, 0, screenWidth/1.5, screenHeight/3)
 
 	return game
+}
+
+func (g *Game) Draw() {
+	if g.IsInventoryOpen {
+		rl.DrawRectangleLinesEx(g.Inventory, 1, rl.Beige)
+		g.P.DrawInventory()
+	}
 }

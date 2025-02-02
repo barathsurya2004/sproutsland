@@ -33,6 +33,17 @@ func QuitGame() {
 
 func Input() {
 	game.P.Move(game.GameFrame, game.Scenes[0])
+	if rl.IsKeyPressed(rl.KeyQ) {
+		if game.IsInventoryOpen {
+			game.P.IsInteracting = false
+		} else {
+			game.P.IsInteracting = true
+		}
+		game.IsInventoryOpen = !game.IsInventoryOpen
+	}
+	if rl.IsKeyPressed(rl.KeyE) {
+		game.P.PickUpObject(game.Scenes[0])
+	}
 }
 
 func Update() {
@@ -52,6 +63,7 @@ func Draw() {
 	game.Scenes[0].DrawScene()
 	game.P.Draw()
 	rl.EndMode2D()
+	game.Draw()
 	rl.EndDrawing()
 }
 

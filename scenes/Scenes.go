@@ -6,17 +6,19 @@ import (
 	"log"
 	"os"
 
+	"github.com/barathsurya2004/sproutsland/objects"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type Scene struct {
-	TileSetTexs []rl.Texture2D
-	TileSetJson *tileSetJson
-	texHeight   int
-	texWidth    int
-	Src         rl.Rectangle
-	Dest        rl.Rectangle
-	Collision   TilesLayer
+	TileSetTexs    []rl.Texture2D
+	TileSetJson    *tileSetJson
+	texHeight      int
+	texWidth       int
+	Src            rl.Rectangle
+	Dest           rl.Rectangle
+	Collision      TilesLayer
+	ObjectsPresent []objects.Object
 }
 
 type tileSetJson struct {
@@ -63,6 +65,9 @@ func (s *Scene) DrawScene() {
 			rl.DrawTexturePro(s.TileSetTexs[j], s.Src, s.Dest, rl.NewVector2(0, 0), 0, rl.White)
 		}
 	}
+	for _, val := range s.ObjectsPresent {
+		rl.DrawRectangleLinesEx(val.Dest, 1, rl.Blue)
+	}
 }
 
 func NewScene(tilejsonUrl string) *Scene {
@@ -81,5 +86,10 @@ func NewScene(tilejsonUrl string) *Scene {
 		}
 		fmt.Println(temp.TileSetTexs)
 	}
+
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0, 0, 48, 48)))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(13*48, 5*48, 48, 48)))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0*48, 15*48, 48, 48)))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(10*48, 20*48, 48, 48)))
 	return temp
 }
