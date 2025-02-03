@@ -19,12 +19,12 @@ This project is a work-in-progress **sandbox-style 2D game**, inspired by games 
 - Player movement and controls
 - Basic collision detection
 - Tile-based world system
+- Inventory system for collecting and using items (In process)
 
 ### 🔜 Planned
 
 - NPC interactions and dialogues
 - Day-night cycle and weather effects
-- Inventory system for collecting and using items
 - Customizable player assets
 - Sound effects and background music
 
@@ -33,25 +33,27 @@ This project is a work-in-progress **sandbox-style 2D game**, inspired by games 
 ### Prerequisites
 
 - Install **Go**: [Download Go](https://go.dev/dl/)
-- Install **Raylib**:
+- Install all library:
+
   - Mac/Linux:
 
     ```sh
-    brew install raylib
+    make audit
     ```
 
   - Windows:
-    - Download from [Raylib GitHub](https://github.com/raysan5/raylib)
     - Follow installation instructions for your OS.
 
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/game-project.git
-cd game-project
+git clone https://github.com/barathsurya@2004/sproutsland.git
+cd sproutsland
 ```
 
 ### Run the Game
+
+# make sure to have all the modules installed before running
 
 ```sh
 make run
