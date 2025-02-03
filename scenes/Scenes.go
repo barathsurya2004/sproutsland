@@ -66,7 +66,8 @@ func (s *Scene) DrawScene() {
 		}
 	}
 	for _, val := range s.ObjectsPresent {
-		rl.DrawRectangleLinesEx(val.Dest, 1, rl.Blue)
+		src := rl.NewRectangle(0, 0, 16, 16)
+		rl.DrawTexturePro(val.Tex, src, val.Dest, rl.NewVector2(0, 0), 0, rl.White)
 	}
 }
 
@@ -87,9 +88,9 @@ func NewScene(tilejsonUrl string) *Scene {
 		fmt.Println(temp.TileSetTexs)
 	}
 
-	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0, 0, 48, 48)))
-	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(13*48, 5*48, 48, 48)))
-	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0*48, 15*48, 48, 48)))
-	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(10*48, 20*48, 48, 48)))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0, 0, 48, 48), "./assets/Objects/Simple_Milk_and_grass_item.png", 2))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(15*48, 10*48, 48, 48), "./assets/Objects/Simple_Milk_and_grass_item.png", 1))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(20*48, 20*48, 48, 48), "./assets/Objects/Simple_Milk_and_grass_item.png", 5))
+	temp.ObjectsPresent = append(temp.ObjectsPresent, *objects.NewObject(rl.NewRectangle(0, 15*48, 48, 48), "./assets/Objects/Simple_Milk_and_grass_item.png", 3))
 	return temp
 }

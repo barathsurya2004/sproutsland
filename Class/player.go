@@ -125,7 +125,7 @@ func (p *Player) DrawInventory() {
 	}
 	for i, object := range p.Inventory {
 		temp := rl.NewRectangle(float32(i)*72, 0, 48, 48)
-		rl.DrawRectangleLinesEx(temp, 2, rl.Black)
+		rl.DrawTexturePro(object.Tex, rl.NewRectangle(0, 0, 16, 16), temp, rl.NewVector2(0, 0), 0, rl.White)
 		quant := strconv.Itoa(object.Quantity)
 		rl.DrawText(quant, int32(i*72+48), 48, 12, rl.Black)
 	}
