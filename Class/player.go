@@ -185,6 +185,9 @@ func (p *Player) DrawInventory() {
 
 func (p *Player) UseObject() {
 	if !p.Inventory[p.InventoryCS].CanReuse {
-		p.Inventory = append(p.Inventory[:p.InventoryCS], p.Inventory[p.InventoryCS+1:]...)
+		p.Inventory[p.InventoryCS].Quantity--
+		if p.Inventory[p.InventoryCS].Quantity == 0 {
+			p.Inventory = append(p.Inventory[:p.InventoryCS], p.Inventory[p.InventoryCS+1:]...)
+		}
 	}
 }
