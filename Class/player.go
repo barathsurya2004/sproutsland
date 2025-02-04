@@ -12,15 +12,19 @@ import (
 )
 
 type Player struct {
-	Src           rl.Rectangle
-	Dest          rl.Rectangle
-	Tex           rl.Texture2D
-	Speed         int
-	playerFrame   int
-	direction     int
-	isMoving      bool
-	Inventory     []objects.Object
-	IsInteracting bool
+	Src               rl.Rectangle
+	Dest              rl.Rectangle
+	Tex               rl.Texture2D
+	Speed             int
+	playerFrame       int
+	direction         int
+	isMoving          bool
+	Inventory         []objects.Object
+	IsInventoryOpen   bool
+	IsInteracting     bool
+	InventoryCS       int
+	inventoryDropDown bool
+	inventDropDownOp  int
 }
 
 func NewPlayer(url string) *Player {
@@ -33,28 +37,6 @@ func NewPlayer(url string) *Player {
 }
 
 func (p *Player) Move(gameFrame int, s *scenes.Scene) {
-	dx, dy := 0, 0
-	p.isMoving = false
-	if rl.IsKeyDown(rl.KeyUp) {
-		dy -= p.Speed
-		p.direction = 1
-		p.isMoving = true
-	}
-	if rl.IsKeyDown(rl.KeyLeft) {
-		dx -= p.Speed
-		p.direction = 2
-		p.isMoving = true
-	}
-	if rl.IsKeyDown(rl.KeyRight) {
-		dx += p.Speed
-		p.direction = 3
-		p.isMoving = true
-	}
-	if rl.IsKeyDown(rl.KeyDown) {
-		p.direction = 0
-		dy += p.Speed
-		p.isMoving = true
-	}
 	if p.isMoving && !p.IsInteracting {
 		if gameFrame%10 == 1 {
 			p.playerFrame += 1
@@ -73,14 +55,67 @@ func (p *Player) Move(gameFrame int, s *scenes.Scene) {
 		}
 	}
 
-	dx, dy = p.isColliding(*s, dx, dy)
-
+	p.Src.X = p.Src.Width * float32(p.playerFrame)
 	if !p.IsInteracting {
+		dx, dy := 0, 0
+		p.isMoving = false
+		if rl.IsKeyDown(rl.KeyUp) {
+			dy -= p.Speed
+			p.direction = 1
+			p.isMoving = true
+		}
+		if rl.IsKeyDown(rl.KeyLeft) {
+			dx -= p.Speed
+			p.direction = 2
+			p.isMoving = true
+		}
+		if rl.IsKeyDown(rl.KeyRight) {
+			dx += p.Speed
+			p.direction = 3
+			p.isMoving = true
+		}
+		if rl.IsKeyDown(rl.KeyDown) {
+			p.direction = 0
+			dy += p.Speed
+			p.isMoving = true
+		}
+		dx, dy = p.isColliding(*s, dx, dy)
 		p.Dest.X += float32(dx)
 		p.Dest.Y += float32(dy)
 		p.Src.Y = p.Src.Height * float32(p.direction)
+	} else {
+		if p.IsInventoryOpen {
+			if !p.inventoryDropDown {
+				if len(p.Inventory) != 0 {
+
+					if rl.IsKeyPressed(rl.KeyEnter) {
+						p.inventoryDropDown = true
+					}
+					if rl.IsKeyPressed(rl.KeyRight) {
+						p.InventoryCS = (p.InventoryCS + 1) % len(p.Inventory)
+					}
+					if rl.IsKeyPressed(rl.KeyLeft) {
+						p.InventoryCS = (p.InventoryCS - 1 + len(p.Inventory)) % len(p.Inventory)
+					}
+				}
+			} else {
+				sizeOfOp := len(p.Inventory[p.InventoryCS].Uses)
+				if rl.IsKeyPressed(rl.KeyEnter) {
+					if p.inventDropDownOp == 0 {
+						p.UseObject()
+					}
+					p.inventoryDropDown = false
+					p.inventDropDownOp = 0
+				}
+				if rl.IsKeyPressed(rl.KeyUp) {
+					p.inventDropDownOp = (p.inventDropDownOp + 1 + sizeOfOp) % sizeOfOp
+				}
+				if rl.IsKeyPressed(rl.KeyDown) {
+					p.inventDropDownOp = (p.inventDropDownOp - 1 + sizeOfOp) % sizeOfOp
+				}
+			}
+		}
 	}
-	p.Src.X = p.Src.Width * float32(p.playerFrame)
 }
 
 func (p *Player) PickUpObject(s *scenes.Scene) {
@@ -125,8 +160,31 @@ func (p *Player) DrawInventory() {
 	}
 	for i, object := range p.Inventory {
 		temp := rl.NewRectangle(float32(i)*72, 0, 48, 48)
-		rl.DrawTexturePro(object.Tex, rl.NewRectangle(0, 0, 16, 16), temp, rl.NewVector2(0, 0), 0, rl.White)
+		rl.DrawTexturePro(object.Tex, rl.NewRectangle(float32(object.Src)*16, 0, 16, 16), temp, rl.NewVector2(0, 0), 0, rl.White)
 		quant := strconv.Itoa(object.Quantity)
-		rl.DrawText(quant, int32(i*72+48), 48, 12, rl.Black)
+		if p.InventoryCS == i {
+			rl.DrawText(quant, int32(i*72+48), 48, 12, rl.Red)
+			rl.DrawRectangleLinesEx(temp, 1, rl.Red)
+		} else {
+			rl.DrawText(quant, int32(i*72+48), 48, 12, rl.Black)
+		}
+		if p.inventoryDropDown && p.InventoryCS == i {
+			rl.DrawRectangleV(rl.NewVector2(float32(i*72+24), 24), rl.NewVector2(48, 48), rl.Red)
+			x := int32(i*72 + 24)
+			for i, s := range p.Inventory[p.InventoryCS].Uses {
+				if i == p.inventDropDownOp {
+					rl.DrawText(s, x, int32(i*24+24), 15, rl.Blue)
+				} else {
+					rl.DrawText(s, x, int32(i*24+24), 15, rl.Black)
+				}
+			}
+		}
+
+	}
+}
+
+func (p *Player) UseObject() {
+	if !p.Inventory[p.InventoryCS].CanReuse {
+		p.Inventory = append(p.Inventory[:p.InventoryCS], p.Inventory[p.InventoryCS+1:]...)
 	}
 }

@@ -36,8 +36,10 @@ func Input() {
 	if rl.IsKeyPressed(rl.KeyQ) {
 		if game.IsInventoryOpen {
 			game.P.IsInteracting = false
+			game.P.IsInventoryOpen = false
 		} else {
 			game.P.IsInteracting = true
+			game.P.IsInventoryOpen = true
 		}
 		game.IsInventoryOpen = !game.IsInventoryOpen
 	}

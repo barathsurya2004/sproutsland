@@ -28,7 +28,7 @@ func NewGame() *Game {
 
 func (g *Game) Draw() {
 	if g.IsInventoryOpen {
-		rl.DrawRectangleLinesEx(g.Inventory, 1, rl.Beige)
+		rl.DrawRectangleLinesEx(g.Inventory, 3, rl.Blue)
 		g.P.DrawInventory()
 	}
 }

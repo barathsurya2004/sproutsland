@@ -66,7 +66,8 @@ func (s *Scene) DrawScene() {
 		}
 	}
 	for _, val := range s.ObjectsPresent {
-		src := rl.NewRectangle(0, 0, 16, 16)
+		x := val.Src
+		src := rl.NewRectangle(float32(x)*16, 0, 16, 16)
 		rl.DrawTexturePro(val.Tex, src, val.Dest, rl.NewVector2(0, 0), 0, rl.White)
 	}
 }

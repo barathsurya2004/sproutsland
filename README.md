@@ -47,7 +47,7 @@ This project is a work-in-progress **sandbox-style 2D game**, inspired by games 
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/barathsurya@2004/sproutsland.git
+git clone https://github.com/barathsurya2004/sproutsland.git
 cd sproutsland
 ```
 
